@@ -1,0 +1,286 @@
+@layer theme, base, antd, components, utilities;
+
+@import "tailwindcss";
+
+/* ===== Design tokens (docs/REQUIREMENTS.md mục 8) ===== */
+@theme {
+  --color-ivory: #fffdf9;
+  --color-cream: #f7f1e8;
+  --color-sand: #ede3d3;
+  --color-line: #efe8dc;
+  --color-moss: #5b6b4e;
+  --color-moss-dark: #434f39;
+  /* Màu thật trích từ chữ logo THIENVU */
+  --color-forest: #2b4e2d;
+  --color-ink: #2b2a27;
+  --color-muted: #6b655c;
+  
+  --font-serif: var(--font-cormorant), "Times New Roman", serif;
+  --font-sans: var(--font-be-vietnam), system-ui, sans-serif;
+
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+:root {
+  --header-h: 68px;
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --header-h: 80px;
+  }
+}
+
+/* Thương hiệu cưới luôn nền sáng — không theo dark mode hệ điều hành (R-DESIGN 3) */
+html {
+  color-scheme: light;
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--header-h);
+}
+
+body {
+  background: var(--color-ivory);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Chặn tràn ngang – clip thay vì hidden để không phá position: sticky */
+html,
+body {
+  overflow-x: clip;
+}
+
+@layer base {
+  *,
+  ::before,
+  ::after {
+    border-color: var(--color-line);
+  }
+}
+
+::selection {
+  background: var(--color-moss);
+  color: var(--color-ivory);
+}
+
+/* ===== Chống rớt 1 chữ xuống dòng cuối (kết hợp hàm nb()) ===== */
+h1,
+h2,
+h3,
+h4 {
+  text-wrap: balance;
+}
+
+p,
+li,
+blockquote,
+figcaption,
+label {
+  text-wrap: pretty;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-moss);
+  outline-offset: 3px;
+}
+
+/* Kính mờ */
+.glass-panel {
+  background: rgba(255, 253, 249, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Thanh tiến trình đọc (Storytelling) — chỉ chạy ở trình duyệt hỗ trợ scroll-timeline */
+.scroll-progress {
+  display: none;
+}
+@supports (animation-timeline: scroll()) {
+  .scroll-progress {
+    display: block;
+    transform-origin: left;
+    animation: scroll-progress linear both;
+    animation-timeline: scroll(root);
+  }
+}
+@keyframes scroll-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Thanh cuộn ngang ẩn (slider cảm nhận) */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* ===== Hiệu ứng vào trang của Hero (không phụ thuộc JS để giữ LCP) ===== */
+@keyframes hero-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.hero-in {
+  animation: hero-in 1.1s var(--ease-soft) both;
+  animation-delay: var(--d, 0ms);
+}
+
+@keyframes scroll-line {
+  0% {
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+  45% {
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+  55% {
+    transform: scaleY(1);
+    transform-origin: bottom;
+  }
+  100% {
+    transform: scaleY(0);
+    transform-origin: bottom;
+  }
+}
+
+.scroll-line {
+  animation: scroll-line 2.4s ease-in-out infinite;
+}
+
+/* ===== Reveal khi cuộn (RevealObserver thêm .is-revealed) ===== */
+[data-reveal] {
+  opacity: 0;
+  transition:
+    opacity 1s ease,
+    transform 1s var(--ease-soft);
+}
+
+[data-reveal='left'] {
+  transform: translateX(-56px);
+}
+
+[data-reveal='right'] {
+  transform: translateX(56px);
+}
+
+[data-reveal='up'] {
+  transform: translateY(40px);
+}
+
+[data-reveal='flip'] {
+  transform: perspective(900px) rotateX(-32deg) translateY(28px);
+  transform-origin: top center;
+}
+
+[data-reveal='grow-x'] {
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+[data-reveal='grow-c'] {
+  transform: scaleX(0);
+  transform-origin: center;
+}
+
+[data-reveal='blur'] {
+  transform: translateY(18px);
+  filter: blur(8px);
+  transition:
+    opacity 1s ease,
+    transform 1s var(--ease-soft),
+    filter 1s ease;
+}
+
+[data-reveal].is-revealed {
+  opacity: 1;
+  transform: none;
+  filter: none;
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+[data-reveal] .reveal-zoom {
+  transform: scale(1.18);
+  transition: transform 1.6s var(--ease-soft);
+}
+
+[data-reveal].is-revealed .reveal-zoom {
+  transform: scale(1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+@keyframes lightbox-fade {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.lightbox-fade {
+  animation: lightbox-fade 0.3s ease-out;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.fade-up {
+  animation: fade-up 0.6s var(--ease-soft) both;
+}
+
+@media (scripting: none) {
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: none;
+  }
+
+  [data-reveal] .reveal-zoom {
+    transform: none;
+    transition: none;
+  }
+
+  .lightbox-fade,
+  .hero-in,
+  .scroll-line,
+  .fade-up {
+    animation: none;
+  }
+}
