@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
 import Logo from "@/components/ui/Logo";
 import { IconClose, IconMenu } from "@/components/ui/Icons";
 import { btnPrimary, container } from "@/components/ui/styles";
@@ -35,12 +35,33 @@ export default function Header() {
     };
   }, []);
 
+  // Menu di động mở: khoá cuộn trang, Esc để đóng, tự đóng khi màn hình chuyển sang desktop
   useEffect(() => {
     if (!open) return;
+    const root = document.documentElement;
+    root.classList.add("menu-open");
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    const desktop = window.matchMedia("(min-width: 1024px)");
+    const onDesktop = () => desktop.matches && setOpen(false);
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    desktop.addEventListener("change", onDesktop);
+    return () => {
+      root.classList.remove("menu-open");
+      window.removeEventListener("keydown", onKey);
+      desktop.removeEventListener("change", onDesktop);
+    };
   }, [open]);
+
+  /** Bấm mục menu: mở khoá cuộn trước rồi mới cuộn tới khu vực (tránh bị khoá chặn lại) */
+  const goTo = (e: MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    document.documentElement.classList.remove("menu-open");
+    setOpen(false);
+    requestAnimationFrame(() => {
+      document.querySelector(href)?.scrollIntoView({ behavior: "smooth", block: "start" });
+      history.replaceState(null, "", href);
+    });
+  };
 
   return (
     <header
@@ -123,18 +144,18 @@ export default function Header() {
       {/* Menu di động */}
       <div
         id="menu-di-dong"
-        className={`absolute inset-x-0 top-full origin-top border-b border-line bg-ivory transition-all duration-300 lg:hidden ${
+        className={`absolute inset-x-0 top-full flex h-[calc(100dvh-var(--header-h))] origin-top flex-col overflow-y-auto overscroll-contain bg-ivory transition-all duration-300 lg:hidden ${
           open ? "visible scale-y-100 opacity-100" : "invisible scale-y-95 opacity-0"
         }`}
       >
-        <nav aria-label="Điều hướng di động" className={`${container} py-4`}>
-          <ul className="divide-y divide-line">
+        <nav aria-label="Điều hướng di động" className={`${container} flex flex-1 flex-col py-6`}>
+          <ul className="mb-8 divide-y divide-line">
             {navItems.map((item) => (
               <li key={item.href}>
                 <a
                   href={item.href}
-                  onClick={() => setOpen(false)}
-                  className="flex items-center justify-between py-3.5 font-serif text-xl text-ink"
+                  onClick={(e) => goTo(e, item.href)}
+                  className="flex items-center justify-between py-4 font-serif text-[1.6rem] text-ink"
                 >
                   {item.label}
                   <span aria-hidden className="text-moss">→</span>
@@ -142,7 +163,7 @@ export default function Header() {
               </li>
             ))}
           </ul>
-          <a href={BOOKING_ANCHOR} onClick={() => setOpen(false)} className={`${btnPrimary} mt-4 w-full`}>
+          <a href={BOOKING_ANCHOR} onClick={(e) => goTo(e, BOOKING_ANCHOR)} className={`${btnPrimary} mt-auto w-full`}>
             Đặt lịch ngay
           </a>
         </nav>

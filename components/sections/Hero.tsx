@@ -27,7 +27,7 @@ const socials = [
 
 /**
  * FR-09 — Hero theo ảnh mẫu bố cục: ảnh lớn bên trái trong khung sóng, khối chữ bên phải (tiêu đề WarpText),
- * icon mạng xã hội góc dưới trái. Desktop: kéo lên nằm dưới header trong suốt (cao đúng 100svh).
+ * icon mạng xã hội góc dưới trái. Màn hình > 1440px: bố cục giữ khung 1440px căn giữa (--hero-box). Desktop: kéo lên nằm dưới header trong suốt (cao bằng màn hình, tối đa 860px — biến --stage-h).
  * Ảnh sạch (không phủ/lọc màu).
  */
 export default function Hero() {
@@ -35,7 +35,7 @@ export default function Hero() {
     <section
       id="trang-chu"
       aria-labelledby="hero-title"
-      className="relative flex min-h-[calc(100svh-var(--header-h))] flex-col overflow-hidden bg-ivory lg:-mt-(--header-h) lg:block lg:min-h-svh"
+      className="relative flex min-h-[calc(var(--stage-h)-var(--header-h))] flex-col overflow-hidden bg-ivory [--hero-box:min(100vw,1440px)] [--hero-img-w:calc(var(--hero-box)*0.62)] [--hero-img-x:calc((100vw-var(--hero-box))/2)] lg:-mt-(--header-h) lg:block lg:min-h-(--stage-h)"
     >
       <svg aria-hidden width="0" height="0" className="absolute">
         <defs>
@@ -48,7 +48,7 @@ export default function Hero() {
       </svg>
 
       {/* Khung ảnh: mobile ở trên, desktop chiếm ~62% bên trái, cao hết Hero */}
-      <div className="relative h-[42svh] min-h-[250px] w-full sm:h-[48svh] lg:absolute lg:inset-y-0 lg:left-0 lg:h-auto lg:w-[62%]">
+      <div className="relative h-[42svh] min-h-[250px] w-full sm:h-[48svh] lg:absolute lg:inset-y-0 lg:left-(--hero-img-x) lg:h-auto lg:w-(--hero-img-w)">
         <div
           aria-hidden
           className="absolute inset-0 bg-sand [clip-path:url(#hero-wave-mBand)] lg:[clip-path:url(#hero-wave-dBand)]"
@@ -59,17 +59,17 @@ export default function Hero() {
             alt="Cô dâu chú rể trong trang phục trắng dưới nắng ấm"
             fill
             preload
-            sizes="(min-width: 1024px) 62vw, 100vw"
+            sizes="(min-width: 1024px) min(62vw, 893px), 100vw"
             className="object-cover object-[45%_35%]"
           />
         </div>
       </div>
 
       {/* Khối chữ (desktop: cột phải) — tiêu đề dùng WarpText (React Bits, WebGL) */}
-      <div className="relative flex flex-1 items-center justify-center px-5 pt-6 pb-16 sm:px-8 sm:pt-10 lg:ml-auto lg:min-h-svh lg:w-[38%] lg:pt-[calc(var(--header-h)+2rem)] lg:pb-16 lg:pr-[max(1rem,calc((100vw-1240px)/2+0.5rem))] lg:pl-2">
+      <div className="relative flex flex-1 items-center justify-center px-5 pt-6 pb-16 sm:px-8 sm:pt-10 lg:ml-auto lg:min-h-(--stage-h) lg:mr-(--hero-img-x) lg:w-[calc(var(--hero-box)*0.38)] lg:pt-[calc(var(--header-h)+2rem)] lg:pb-16 lg:pr-[max(1rem,calc((var(--hero-box)-1240px)/2+0.5rem))] lg:pl-2">
         <div className="w-full max-w-[560px] text-center">
           {/* Tiêu đề thật cho SEO & trình đọc màn hình; bản WarpText chỉ để nhìn */}
-          <h1 id="hero-title" className="sr-only">
+          <h1 id="hero-title" className="sr-only lg:size-90">
             Lưu Giữ Thanh Xuân Bằng Những Khung Hình Tinh{" "}Tế
           </h1>
           <div aria-hidden className="hero-in text-moss" style={delay(250, "--d")}>
@@ -93,7 +93,7 @@ export default function Hero() {
               ripple
               clickRipple
               intro
-              className="h-[260px] sm:h-[320px] lg:h-[clamp(340px,50vh,520px)]"
+              className="h-[260px] sm:h-[320px] lg:h-[clamp(340px,calc(var(--stage-h)*0.55),480px)]"
             />
           </div>
           <a
@@ -109,7 +109,7 @@ export default function Hero() {
       {/* Mạng xã hội — góc dưới trái, nằm trên dải nền ngoài khung ảnh (desktop) */}
       <ul
         aria-label="Mạng xã hội"
-        className="hero-in absolute bottom-6 left-5 z-10 hidden items-center gap-2 lg:flex xl:left-8"
+        className="hero-in absolute bottom-6 left-[calc(var(--hero-img-x)+1.25rem)] z-10 hidden items-center gap-2 lg:flex xl:left-[calc(var(--hero-img-x)+2rem)]"
         style={delay(800, "--d")}
       >
         {socials.map((s) => (

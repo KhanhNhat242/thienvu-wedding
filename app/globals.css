@@ -23,6 +23,8 @@
 
 :root {
   --header-h: 68px;
+  /* Chiều cao "sân khấu" cho Hero & Dịch vụ: bằng màn hình nhưng tối đa 860px để màn hình lớn không bị kéo dài */
+  --stage-h: min(100svh, 860px);
 }
 
 @media (min-width: 1024px) {
@@ -301,4 +303,10 @@ label {
   .fade-up {
     animation: none;
   }
+}
+
+/* Khoá cuộn trang khi menu di động đang mở (Header thêm/bỏ lớp .menu-open trên <html>) */
+html.menu-open,
+html.menu-open body {
+  overflow: hidden;
 }

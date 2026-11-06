@@ -161,7 +161,7 @@ Header → Hero → Giới thiệu/USP → Dịch vụ → Bảng giá → Album
 - Padding dọc section: desktop 96–120px · mobile 64–80px. Tiêu đề → nội dung: 56px desktop / 40px tablet / 32px mobile (`headingGap`). Gap thẻ/ảnh: 24–32px desktop · 16–20px mobile. Khối chữ tối đa 600–680px; lề mobile 20px.
 - Định lượng chữ: tiêu đề 6–10 từ, mô tả phụ ≤ 2 dòng, nội dung thẻ 15–25 từ, không đoạn văn quá 3 dòng.
 - **Không để 1 chữ rớt xuống dòng cuối** trên mọi màn hình: mọi text hiển thị bọc qua `nb()` (`lib/typography.ts`) + CSS `text-wrap: balance/pretty`.
-- Hero cao vừa đúng 1 màn hình: `min-h: calc(100svh - var(--header-h))`.
+- Hero & Dịch vụ (khung ghim) cao bằng màn hình nhưng **tối đa 860px** (`--stage-h` trong `globals.css`) để màn hình lớn không bị kéo dài; màn hình rộng > 1440px: Hero giữ bố cục khung 1440px căn giữa.
 
 ---
 
@@ -231,6 +231,7 @@ Header → Hero → Giới thiệu/USP → Dịch vụ → Bảng giá → Album
 |---|---|---|
 | 06/11/2026 | Tạo tài liệu từ Phiếu DEV 55 | Dev |
 | 06/11/2026 | Dựng landing page one-page theo brief "Editorial Hàn Quốc" (10 section + banner ngoại cảnh chuyển tiếp). Cập nhật design tokens (màu logo thật `#2B4E2D`), quy chuẩn nhịp nền/khoảng cách/chống rớt chữ; thêm Q12–Q14; toạ độ Maps: 20.3175377, 106.0224283 | Dev |
+| 06/11/2026 | Giới hạn chiều cao Hero & Dịch vụ trên màn hình lớn (tối đa 860px), Hero căn khung 1440px trên màn rất rộng, bánh xe dịch vụ bán kính tối đa 900px (NFR-01) | Dev |
 | 06/11/2026 | Hero: tiêu đề dùng WarpText (React Bits, thêm thư viện ogl); Cảm nhận: ProfileCard (React Bits, bỏ phụ thuộc @hugeicons) | Dev |
 | 06/11/2026 | Album: bỏ bộ lọc, bố cục trái tim 21 ảnh + nút "Xem thêm" mở popup, 30 ảnh ngẫu nhiên từ library (FR-03 không còn lọc theo loại); Trang phục: BounceCards (React Bits), nhấn ảnh mở popup ảnh lớn; Cảm nhận: bố cục thẻ theo ảnh mẫu (ảnh tròn, sao + điểm DEMO) | Dev |
 | 06/11/2026 | Header hoà vào Hero (trong suốt, ẩn nút Đặt lịch ngay trong Hero); Giới thiệu theo ảnh mẫu 3 cột + hover hiện ảnh nền, bỏ U4 khỏi khu này; Dịch vụ desktop: nửa bánh xe ảnh xoay theo cuộn (rộng 50vw) + tiêu đề bên phải; Bảng giá: thẻ TiltedCard (React Bits) — mặt trước ảnh + tên + giá, nhấn lật xem chi tiết, chiều cao theo nội dung | Dev |

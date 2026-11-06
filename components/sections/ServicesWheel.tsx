@@ -33,8 +33,8 @@ function sectorPath(center: number) {
   return `M${pt(a0, R_OUT)} A${R_OUT},${R_OUT} 0 0 1 ${pt(a1, R_OUT)} L${pt(a1, R_IN)} A${R_IN},${R_IN} 0 0 0 ${pt(a0, R_IN)} Z`;
 }
 
-/** Bán kính ngoài = 50vw → nửa bánh xe lộ ra chiếm ~50% chiều rộng màn hình (tâm ở mép trái) */
-const WHEEL_R = "50vw";
+/** Bán kính ngoài = 50vw (nửa bánh xe chiếm ~50% chiều rộng), tối đa 900px để màn hình rất rộng không bị phóng quá lớn */
+const WHEEL_R = "min(50vw, 900px)";
 
 export default function ServicesWheel() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -48,10 +48,13 @@ export default function ServicesWheel() {
       const section = sectionRef.current;
       const wheel = wheelRef.current;
       if (!section || !wheel) return;
-      const header = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--header-h")) || 80;
+      // Khung ghim (sticky) có thể thấp hơn màn hình (tối đa --stage-h) → đọc vị trí ghim & chiều cao thực tế
+      const panel = section.firstElementChild as HTMLElement | null;
+      if (!panel) return;
+      const pinTop = parseFloat(getComputedStyle(panel).top) || 0;
       const rect = section.getBoundingClientRect();
-      const travel = section.offsetHeight - (window.innerHeight - header);
-      const p = Math.min(1, Math.max(0, (header - rect.top) / Math.max(travel, 1)));
+      const travel = section.offsetHeight - panel.offsetHeight;
+      const p = Math.min(1, Math.max(0, (pinTop - rect.top) / Math.max(travel, 1)));
       const pos = p * (N - 1);
       wheel.style.setProperty("--rot", `${-pos * STEP}deg`);
       setActive(Math.round(pos));
@@ -72,9 +75,9 @@ export default function ServicesWheel() {
   const counter = (n: number) => String(n).padStart(2, "0");
 
   return (
-    // Chiều cao = 1 màn hình + quãng cuộn cho 4 lần chuyển (≈ 55svh mỗi dịch vụ)
-    <div ref={sectionRef} className="relative h-[calc(100svh+4*55svh)]">
-      <div className="sticky top-(--header-h) h-[calc(100svh-var(--header-h))] overflow-hidden">
+    // Khung ghim cao bằng màn hình nhưng tối đa 860px (--stage-h); quãng cuộn cho 4 lần chuyển ≈ 0.55 × khung mỗi dịch vụ
+    <div ref={sectionRef} className="relative h-[calc(var(--stage-h)+4*var(--stage-h)*0.55)]">
+      <div className="sticky top-[max(var(--header-h),calc((100svh-var(--stage-h))/2+var(--header-h)/2))] h-[calc(var(--stage-h)-var(--header-h))] overflow-hidden">
         <svg aria-hidden width="0" height="0" className="absolute">
           <defs>
             {Array.from({ length: WEDGES }, (_, i) => (
