@@ -8,12 +8,16 @@ export const img = {
   heroMain: L("773492410_1708808257920827_2743680030703700273_n.jpg"), // cặp đôi đồ trắng, nắng ấm sân thượng
 
 
+  // Giới thiệu U2 — ekip chỉnh tà váy cưới (thể hiện "trọn gói")
+  aboutU2: L("788816781_1726822322786087_7975857372942698245_n.jpg"),
+
   // Dịch vụ S1–S5
-  s1: L("774196868_1710875467714106_9083195556640985337_n.jpg"), // cặp đôi cười rạng rỡ trong studio
-  s2: L("768966003_1702887335179586_4782208588533085702_n.jpg"), // tiệc cưới
-  s3: L("788816781_1726822322786087_7975857372942698245_n.jpg"), // ekip xếp tà váy xòe lớn (ngang)
-  s4: L("757186245_1690915626376757_3076179358957441603_n.jpg"), // cận mặt cô dâu cười
-  s5: L("798020510_1732213692246950_3736078186054212848_n.jpg"), // nắng xuyên lá trước cổng gỗ – chất điện ảnh
+  // Cặp đôi đứng sát / cận mặt, ảnh ≥ 960px — ô quạt hẹp của bánh xe dịch vụ ôm trọn khuôn mặt, không mờ
+  s1: L("774407290_1710860257715627_7125657065786455910_n.jpg"), // cặp đôi đứng sát nhau trong vườn, mặt gần trục giữa
+  s2: L("767586050_1702887318512921_2142566620814072814_n.jpg"), // nâng ly bên tháp sâm panh
+  s3: L("805700083_1737576811710638_2093118580540751129_n.jpg"), // cô dâu váy bồng ngồi cạnh chú rể
+  s4: L("757186245_1690915626376757_3076179358957441603_n.jpg"), // chân dung cô dâu cận mặt, lớp makeup trong veo
+  s5: L("773686654_1710860304382289_1061840928892279742_n.jpg"), // voan cưới bay trong vườn, cặp đôi giữa khung
 
   // Mặt sau thẻ giá (lật khi bấm) — chọn ngẫu nhiên từ library, cố định để không lệch SSR/client
   priceBack1: L("805764787_1737576955043957_8632249629913621431_n.jpg"), // cô dâu váy xòe, rèm đỏ

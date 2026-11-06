@@ -8,23 +8,36 @@ import { nb } from "@/lib/typography";
 /*
  * Dịch vụ (desktop ≥ 1024px) — 2 phần, theo ảnh mẫu bố cục:
  * - Trái: NỬA bánh xe ảnh (tâm đặt sát mép trái màn hình → chỉ lộ nửa phải hình tròn).
- *   Vòng đủ 10 ô (5 dịch vụ lặp 2 lần) để nửa đang hiện luôn kín ảnh khi quay.
+ *   5 ô quạt lớn (72°/ô, mỗi dịch vụ 1 ô, không lặp ảnh) — ô cao gần bằng bán kính nên ảnh dọc
+ *   giữ được trọn khuôn mặt khi ô ở vị trí 3 giờ.
  * - Phải: tiêu đề + mô tả section, bên dưới là tên & mô tả dịch vụ đang ở vị trí 3 giờ.
  * Section được ghim (sticky) trong lúc cuộn; tiến độ cuộn quay bánh xe.
  * Ảnh xoay ngược để luôn đứng thẳng. Cập nhật bằng biến CSS --rot (không render lại React mỗi khung hình).
  */
 
 const N = services.length;
-const WEDGES = N * 2; // 10 ô quanh vòng tròn
-const STEP = 360 / WEDGES; // 36°
-const GAP = 3; // khe giữa các ô (độ)
-const R_OUT = 0.5; // bán kính ngoài (đơn vị hộp vuông 0..1)
-const R_IN = 0.2; // bán kính trong
-const R_MID = (R_OUT + R_IN) / 2;
-
+const WEDGES = N; // 5 ô quanh vòng tròn
+const STEP = 360 / WEDGES; // 72°
+const GAP = 2.5; // khe giữa các ô (độ)
+// Vành hẹp (bề ngang ô ≈ 20% đường kính) để ô ôm sát khuôn mặt thay vì lộ nhiều phông nền
+const R_OUT = 0.46; // bán kính ngoài (đơn vị hộp vuông 0..1)
+const R_IN = 0.26; // bán kính trong
 const rad = (deg: number) => (deg * Math.PI) / 180;
 const pt = (deg: number, r: number) =>
   `${(0.5 + r * Math.cos(rad(deg))).toFixed(4)},${(0.5 + r * Math.sin(rad(deg))).toFixed(4)}`;
+
+/*
+ * Khung ảnh (đứng thẳng, xoay ngược) đặt quanh tâm hình bao của ô quạt và đủ lớn để phủ kín ô
+ * ở mọi góc quay: tâm cách tâm bánh xe IMG_R, cạnh = 2 × khoảng cách xa nhất từ tâm đó tới góc ô.
+ */
+const HALF = rad(STEP / 2 - GAP / 2);
+const IMG_R = (R_IN * Math.cos(HALF) + R_OUT) / 2;
+const IMG_SIZE =
+  2 *
+  Math.max(
+    Math.hypot(R_OUT * Math.cos(HALF) - IMG_R, R_OUT * Math.sin(HALF)),
+    Math.hypot(IMG_R - R_IN * Math.cos(HALF), R_IN * Math.sin(HALF)),
+  );
 
 /** Hình quạt vành khuyên quanh tâm (0.5, 0.5), góc tính từ hướng 3 giờ, chiều kim đồng hồ */
 function sectorPath(center: number) {
@@ -35,6 +48,8 @@ function sectorPath(center: number) {
 
 /** Bán kính ngoài = 50vw (nửa bánh xe chiếm ~50% chiều rộng), tối đa 900px để màn hình rất rộng không bị phóng quá lớn */
 const WHEEL_R = "min(50vw, 900px)";
+/** Bề rộng thật của khung ảnh (= IMG_SIZE × đường kính) — khai báo đúng để Next không tải ảnh nhỏ rồi phóng to gây mờ */
+const IMG_SIZES = `(min-width: 1800px) ${Math.ceil(IMG_SIZE * 1800)}px, ${Math.ceil(IMG_SIZE * 100)}vw`;
 
 export default function ServicesWheel() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -104,19 +119,28 @@ export default function ServicesWheel() {
           {Array.from({ length: WEDGES }, (_, i) => {
             const s = services[i % N];
             const angle = i * STEP;
-            const [cx, cy] = pt(angle, R_MID).split(",").map(Number);
+            const [cx, cy] = pt(angle, IMG_R).split(",").map(Number);
             return (
               <div key={i} className="absolute inset-0 bg-sand" style={{ clipPath: `url(#svc-wedge-${i})` }}>
                 {/* Khung ảnh đặt giữa ô quạt, xoay ngược để ảnh luôn đứng thẳng */}
                 <div
-                  className="absolute size-[50%] -translate-x-1/2 -translate-y-1/2"
+                  className="absolute -translate-x-1/2 -translate-y-1/2"
                   style={{
+                    width: `${IMG_SIZE * 100}%`,
+                    height: `${IMG_SIZE * 100}%`,
                     left: `${cx * 100}%`,
                     top: `${cy * 100}%`,
                     rotate: "calc(var(--rot) * -1)",
                   }}
                 >
-                  <Image src={s.image} alt="" fill sizes="50vw" className="object-cover" style={{ objectPosition: s.position }} />
+                  <Image
+                    src={s.image}
+                    alt=""
+                    fill
+                    sizes={IMG_SIZES}
+                    className="object-cover"
+                    style={{ objectPosition: s.position }}
+                  />
                 </div>
               </div>
             );
@@ -135,7 +159,7 @@ export default function ServicesWheel() {
         {/* ===== Phải: tiêu đề section + dịch vụ đang xem ===== */}
         <div
           className="absolute inset-y-0 right-0 flex items-center pr-[max(2.5rem,calc((100vw-1240px)/2+2.5rem))]"
-          style={{ left: `calc(${WHEEL_R} + 5vw)` }}
+          style={{ left: `calc(${WHEEL_R} * ${R_OUT * 2} + 5vw)` }}
         >
           <div className="w-full max-w-[520px]">
             <p className="text-[11.5px] font-medium tracking-[0.26em] text-moss uppercase">{nb("Dịch vụ trọn gói")}</p>

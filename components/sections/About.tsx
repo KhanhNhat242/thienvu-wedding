@@ -1,21 +1,14 @@
 import Image from "next/image";
-import type { ComponentType, SVGProps } from "react";
-import { IconCalendar, IconDress, IconPin } from "@/components/ui/Icons";
 import { container, delay } from "@/components/ui/styles";
 import { usps } from "@/data/content";
 import { nb } from "@/lib/typography";
-
-const icons: Record<string, ComponentType<SVGProps<SVGSVGElement>>> = {
-  U1: IconPin,
-  U2: IconDress,
-  U3: IconCalendar,
-};
 
 /**
  * FR-10 — Giới thiệu & điểm khác biệt (U1–U3). Nền kem.
  * Bố cục theo ảnh mẫu: tiêu đề serif nghiêng cỡ lớn ở giữa, bên dưới 3 cột căn giữa
  * (icon nét mảnh + tiêu đề + đoạn ngắn), không khung thẻ.
- * Hover (chỉ thiết bị có chuột): ảnh hiện làm nền cột, chữ chuyển màu ngà đè lên ảnh.
+ * Mỗi cột luôn có ảnh minh hoạ làm nền, tiêu đề màu ngà đè lên. Hover/focus: ảnh zoom nhẹ,
+ * đoạn mô tả trượt từ dưới lên. Thiết bị cảm ứng (không có hover): mô tả luôn hiện.
  * Ngoại lệ có chủ đích của quy tắc "không phủ ảnh": lớp tối mờ dưới chữ để đủ tương phản (AA).
  */
 export default function About() {
@@ -34,41 +27,37 @@ export default function About() {
 
         <div className="mt-12 grid gap-6 sm:mt-14 md:grid-cols-3 md:gap-4 lg:mt-16 lg:gap-6">
           {usps.map((u, i) => {
-            const Icon = icons[u.id];
             return (
               <article
                 key={u.id}
                 data-reveal="up"
                 style={delay(100 * i)}
-                className="group relative isolate flex flex-col items-center justify-center overflow-hidden rounded-[2px] px-7 py-10 text-center md:min-h-[360px] lg:px-10"
+                tabIndex={0}
+                className="group relative isolate flex flex-col items-center justify-center overflow-hidden rounded-[2px] px-7 py-10 text-center min-h-[300px] md:min-h-[360px] lg:px-10"
               >
-                {/* Ảnh nền + lớp tối — chỉ hiện khi hover */}
-                <div
-                  aria-hidden
-                  className="absolute inset-0 -z-10 opacity-0 transition-opacity duration-500 ease-out group-hover:opacity-100"
-                >
+                {/* Ảnh nền + lớp tối — luôn hiện; hover zoom nhẹ */}
+                <div aria-hidden className="absolute inset-0 -z-10 overflow-hidden bg-sand">
                   <Image
                     src={u.image}
                     alt=""
                     fill
                     sizes="(min-width: 768px) 33vw, 100vw"
-                    className="scale-105 object-cover transition-transform duration-700 ease-out group-hover:scale-100"
+                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06] group-focus-visible:scale-[1.06] motion-reduce:transition-none"
                   />
                   <div className="absolute inset-0 bg-[#1f2a1c]/60" />
                 </div>
 
-                {Icon && (
-                  <Icon
-                    className="mx-auto size-12 text-moss transition-colors duration-500 group-hover:text-ivory"
-                    strokeWidth={1}
-                  />
-                )}
-                <h3 className="mt-5 max-w-[300px] font-serif text-[1.55rem] leading-snug font-semibold text-ink transition-colors duration-500 group-hover:text-ivory">
+                <h3 className="max-w-[300px] font-serif text-[1.55rem] leading-snug font-semibold text-ivory">
                   {nb(u.title)}
                 </h3>
-                <p className="mt-3 max-w-[300px] text-[14.5px] leading-relaxed text-muted transition-colors duration-500 group-hover:text-ivory/90">
-                  {nb(u.text)}
-                </p>
+                {/* Mô tả: thu gọn mặc định (thiết bị có chuột), hover/focus thì mở ra + trượt từ dưới lên */}
+                <div className="grid grid-rows-[1fr] transition-[grid-template-rows] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none [@media(hover:hover)]:grid-rows-[0fr] [@media(hover:hover)]:group-hover:grid-rows-[1fr] [@media(hover:hover)]:group-focus-visible:grid-rows-[1fr]">
+                  <div className="overflow-hidden">
+                    <p className="mt-3 max-w-[300px] text-[14.5px] leading-relaxed text-ivory/90 transition-[opacity,translate] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none [@media(hover:hover)]:translate-y-4 [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-hover:translate-y-0 [@media(hover:hover)]:group-hover:opacity-100 [@media(hover:hover)]:group-focus-visible:translate-y-0 [@media(hover:hover)]:group-focus-visible:opacity-100">
+                      {nb(u.text)}
+                    </p>
+                  </div>
+                </div>
               </article>
             );
           })}

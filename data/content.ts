@@ -14,7 +14,7 @@ export const usps: { id: string; title: string; text: string; image: string }[] 
     id: "U2",
     title: "Trọn Gói Tại Một Nơi",
     text: "Từ chụp ảnh, váy cưới, vest, áo dài đến trang điểm và quay phim ngày cưới.",
-    image: img.s3,
+    image: img.aboutU2,
   },
   {
     id: "U3",
@@ -39,8 +39,8 @@ export const services: {
     title: "Chụp Ảnh Cưới",
     text: "Đa dạng concept từ studio Hàn Quốc, phim trường đến ngoại cảnh thiên nhiên.",
     image: img.s1,
-    alt: "Cô dâu chú rể cười rạng rỡ trong studio",
-    position: "50% 25%",
+    alt: "Cô dâu chú rể khoác tay nhau trong khu vườn xanh",
+    position: "52% 8%",
     size: "large",
   },
   {
@@ -49,7 +49,7 @@ export const services: {
     text: "Bắt trọn từng khoảnh khắc cảm xúc tự nhiên trong lễ ăn hỏi và lễ cưới.",
     image: img.s2,
     alt: "Cô dâu chú rể nâng ly chúc mừng bên tháp ly và đèn chùm",
-    position: "50% 55%",
+    position: "55% 45%",
     size: "large",
   },
   {
@@ -57,8 +57,8 @@ export const services: {
     title: "Cho Thuê Trang Phục",
     text: "Bộ sưu tập váy cưới, vest lịch lãm và áo dài cưới cập nhật mẫu mới liên tục.",
     image: img.s3,
-    alt: "Ekip chỉnh tà váy cưới xòe rộng cho cô dâu",
-    position: "55% 50%",
+    alt: "Cô dâu váy cưới bồng xòe ngồi cạnh chú rể",
+    position: "42% 38%",
     size: "medium",
   },
   {
@@ -66,8 +66,8 @@ export const services: {
     title: "Trang Điểm Cô Dâu",
     text: "Lớp makeup tôn nét tự nhiên, trong veo chuẩn Hàn, giữ nền bền đẹp suốt ngày dài.",
     image: img.s4,
-    alt: "Cận mặt cô dâu mỉm cười với lớp trang điểm trong trẻo",
-    position: "50% 25%",
+    alt: "Cô dâu áo dài ren trắng với lớp trang điểm trong veo",
+    position: "50% 22%",
     size: "medium",
   },
   {
@@ -75,8 +75,8 @@ export const services: {
     title: "Quay Phim & Video Trend",
     text: "Phim cưới truyền thống kết hợp video ngắn bắt trend sôi động trên TikTok, Reels.",
     image: img.s5,
-    alt: "Nắng xuyên qua tán lá trước cổng gỗ cổ kính",
-    position: "50% 65%",
+    alt: "Khăn voan cưới bay trong gió quanh cô dâu chú rể",
+    position: "50% 22%",
     size: "medium",
   },
 ];

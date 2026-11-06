@@ -231,6 +231,7 @@ Header → Hero → Giới thiệu/USP → Dịch vụ → Bảng giá → Album
 |---|---|---|
 | 06/11/2026 | Tạo tài liệu từ Phiếu DEV 55 | Dev |
 | 06/11/2026 | Dựng landing page one-page theo brief "Editorial Hàn Quốc" (10 section + banner ngoại cảnh chuyển tiếp). Cập nhật design tokens (màu logo thật `#2B4E2D`), quy chuẩn nhịp nền/khoảng cách/chống rớt chữ; thêm Q12–Q14; toạ độ Maps: 20.3175377, 106.0224283 | Dev |
+| 06/11/2026 | Giới thiệu: thẻ mặc định chỉ hiện tiêu đề trên ảnh, hover/focus mô tả trượt lên (cảm ứng luôn hiện); Dịch vụ: bánh xe dùng ảnh toàn thân/trung cảnh để không cắt mặt, bánh xe còn 5 ô quạt 72° vành hẹp (R 0.26–0.46), ảnh cận mặt ≥ 960px, `sizes` đúng bề rộng khung để ảnh không mờ; Giới thiệu U2 dùng key ảnh riêng `aboutU2` | Dev |
 | 06/11/2026 | Giới hạn chiều cao Hero & Dịch vụ trên màn hình lớn (tối đa 860px), Hero căn khung 1440px trên màn rất rộng, bánh xe dịch vụ bán kính tối đa 900px (NFR-01) | Dev |
 | 06/11/2026 | Hero: tiêu đề dùng WarpText (React Bits, thêm thư viện ogl); Cảm nhận: ProfileCard (React Bits, bỏ phụ thuộc @hugeicons) | Dev |
 | 06/11/2026 | Album: bỏ bộ lọc, bố cục trái tim 21 ảnh + nút "Xem thêm" mở popup, 30 ảnh ngẫu nhiên từ library (FR-03 không còn lọc theo loại); Trang phục: BounceCards (React Bits), nhấn ảnh mở popup ảnh lớn; Cảm nhận: bố cục thẻ theo ảnh mẫu (ảnh tròn, sao + điểm DEMO) | Dev |
