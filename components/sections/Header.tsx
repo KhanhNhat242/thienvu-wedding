@@ -1,21 +1,38 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Logo from "@/components/ui/Logo";
 import { IconClose, IconMenu } from "@/components/ui/Icons";
 import { btnPrimary, container } from "@/components/ui/styles";
 import { BOOKING_ANCHOR, navItems } from "@/lib/site-config";
 
-/** FR-08 — Header cố định, nền trắng mờ, menu neo, CTA "Đặt lịch ngay" */
+/**
+ * FR-08 — Header cố định, menu neo, CTA "Đặt lịch ngay".
+ * Trong phạm vi Hero: header trong suốt (hoà vào Hero), ẩn nút "Đặt lịch ngay", menu dồn hết sang phải.
+ * Ra khỏi Hero: nền ngà, nút hiện lại, menu trượt về giữa.
+ * Hiệu ứng bằng transition flex-grow của 2 khoảng đệm hai bên menu.
+ */
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [inHero, setInHero] = useState(true);
+  const headerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 8);
+      const hero = document.getElementById("trang-chu");
+      const headerH = headerRef.current?.offsetHeight ?? 0;
+      // Còn trong Hero khi mép dưới header chưa vượt quá đáy Hero
+      setInHero(hero ? window.scrollY + headerH < hero.offsetTop + hero.offsetHeight - 1 : false);
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, []);
 
   useEffect(() => {
@@ -27,17 +44,27 @@ export default function Header() {
 
   return (
     <header
-      className={`sticky top-0 z-50 h-(--header-h) border-b transition-[background-color,box-shadow,border-color] duration-500 ${
-        scrolled || open
-          ? "border-line bg-ivory/90 backdrop-blur-md"
-          : "border-transparent bg-ivory"
+      ref={headerRef}
+      data-in-hero={inHero}
+      className={`sticky top-0 z-50 h-(--header-h) border-b transition-[background-color,border-color] duration-500 ${
+        open
+          ? "border-line bg-ivory"
+          : inHero
+            ? "border-transparent bg-ivory lg:bg-transparent"
+            : scrolled
+              ? "border-line bg-ivory/90 backdrop-blur-md"
+              : "border-transparent bg-ivory"
       }`}
     >
-      <div className={`${container} flex h-full items-center justify-between gap-6`}>
+      <div className={`${container} flex h-full items-center gap-6`}>
         <a href="#" aria-label="Về đầu trang" className="shrink-0" onClick={() => setOpen(false)}>
           <Logo />
         </a>
 
+        <span
+          aria-hidden
+          className={`hidden h-px transition-[flex-grow] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none lg:block grow`}
+        />
         <nav aria-label="Điều hướng chính" className="hidden lg:block">
           <ul className="flex items-center gap-7 xl:gap-9">
             {navItems.map((item) => (
@@ -56,11 +83,27 @@ export default function Header() {
             ))}
           </ul>
         </nav>
+        <span
+          aria-hidden
+          className={`hidden h-px transition-[flex-grow] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none lg:block ${inHero ? "grow-0" : "grow"}`}
+        />
 
-        <div className="flex items-center gap-2">
-          <a href={BOOKING_ANCHOR} className={`${btnPrimary} h-10! px-4! text-[13px]! sm:h-11! sm:px-6! sm:text-[14px]!`}>
-            Đặt lịch ngay
-          </a>
+        <div className="ml-auto flex items-center gap-2 lg:ml-0">
+          {/* Ẩn trong Hero (Hero đã có CTA riêng), hiện lại khi cuộn qua */}
+          <div
+            className={`overflow-hidden transition-[max-width,opacity] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${
+              inHero ? "pointer-events-none max-w-0 opacity-0" : "max-w-[200px] opacity-100"
+            }`}
+            aria-hidden={inHero}
+          >
+            <a
+              href={BOOKING_ANCHOR}
+              tabIndex={inHero ? -1 : undefined}
+              className={`${btnPrimary} h-10! px-4! text-[13px]! sm:h-11! sm:px-6! sm:text-[14px]!`}
+            >
+              Đặt lịch ngay
+            </a>
+          </div>
           <button
             type="button"
             className="inline-flex size-11 items-center justify-center rounded-[2px] text-ink transition-colors hover:bg-cream lg:hidden"

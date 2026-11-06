@@ -113,6 +113,24 @@ label {
   }
 }
 
+/* Bộ thẻ trang phục (BounceCards): giữ phần đầu/người khi cắt ảnh dọc thành ô vuông */
+.outfit-bounce .bounce-cards__card img {
+  object-position: 50% 28%;
+}
+
+/* Thẻ cảm nhận (ProfileCard): giữ khuôn mặt khi cắt ảnh dọc, chữ lời nhận xét dùng font dự án */
+.testi-cards .profile-card {
+  width: 100%;
+  font-family: var(--font-be-vietnam), system-ui, sans-serif;
+}
+.testi-cards .profile-card__photo {
+  object-position: center 30%;
+}
+.testi-cards .profile-card__name {
+  font-family: var(--font-cormorant), "Times New Roman", serif;
+  font-size: 24px;
+}
+
 /* Thanh cuộn ngang ẩn (slider cảm nhận) */
 .no-scrollbar {
   scrollbar-width: none;

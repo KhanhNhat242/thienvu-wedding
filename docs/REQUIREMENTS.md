@@ -149,7 +149,8 @@ Header → Hero → Giới thiệu/USP → Dịch vụ → Bảng giá → Album
 
 - **Khung:** Minimal & Direct · **Màu:** Nature Distilled (ngà, kem, rêu) · **Nhịp cuộn & tiêu đề serif:** Storytelling-Driven · **Hero:** Exaggerated Minimalism (chữ serif cỡ lớn) + Hero-Centric (cao 1 màn hình).
 - **Ảnh sạch:** không lớp phủ, không lọc màu, không grain trên ảnh. Chữ không đặt đè lên ảnh (trừ ô chú thích nền đặc).
-- **Bo góc 0–4px** (chuẩn 2px), **không bóng đổ**; phân tách khu bằng nền ngà/kem xen kẽ và đường kẻ mảnh.
+- **Hero (ngoại lệ theo ảnh mẫu):** ảnh lớn bên trái trong khung lượn sóng + dải nền sóng, khối chữ căn phải, CTA viền bo tròn, icon mạng xã hội góc dưới trái; header: menu dồn phải khi ở Hero, trượt về giữa khi cuộn qua.
+- **Bo góc 0–4px** (chuẩn 2px, trừ Hero), **không bóng đổ**; phân tách khu bằng nền ngà/kem xen kẽ và đường kẻ mảnh.
 - Bảng giá & form: ô nhập cao 48px, viền focus 3px, form tối đa 600px, không màu khẩn cấp/đồng hồ đếm ngược, màu thành công = rêu.
 - Cảm nhận: ảnh cặp đôi + trích dẫn với viền trái rêu; không sao vàng.
 - Tránh dấu hiệu "AI slop": thẻ icon-tiêu đề-mô tả giống hệt nhau, nhãn/số thứ tự không mang nghĩa, quầng gradient, kính mờ, nút nhấp nháy, thẻ nổi khi hover, chữ trang trí lặp tiêu đề.
@@ -230,5 +231,9 @@ Header → Hero → Giới thiệu/USP → Dịch vụ → Bảng giá → Album
 |---|---|---|
 | 06/11/2026 | Tạo tài liệu từ Phiếu DEV 55 | Dev |
 | 06/11/2026 | Dựng landing page one-page theo brief "Editorial Hàn Quốc" (10 section + banner ngoại cảnh chuyển tiếp). Cập nhật design tokens (màu logo thật `#2B4E2D`), quy chuẩn nhịp nền/khoảng cách/chống rớt chữ; thêm Q12–Q14; toạ độ Maps: 20.3175377, 106.0224283 | Dev |
+| 06/11/2026 | Hero: tiêu đề dùng WarpText (React Bits, thêm thư viện ogl); Cảm nhận: ProfileCard (React Bits, bỏ phụ thuộc @hugeicons) | Dev |
+| 06/11/2026 | Album: bỏ bộ lọc, bố cục trái tim 21 ảnh + nút "Xem thêm" mở popup, 30 ảnh ngẫu nhiên từ library (FR-03 không còn lọc theo loại); Trang phục: BounceCards (React Bits), nhấn ảnh mở popup ảnh lớn; Cảm nhận: bố cục thẻ theo ảnh mẫu (ảnh tròn, sao + điểm DEMO) | Dev |
+| 06/11/2026 | Header hoà vào Hero (trong suốt, ẩn nút Đặt lịch ngay trong Hero); Giới thiệu theo ảnh mẫu 3 cột + hover hiện ảnh nền, bỏ U4 khỏi khu này; Dịch vụ desktop: nửa bánh xe ảnh xoay theo cuộn (rộng 50vw) + tiêu đề bên phải; Bảng giá: thẻ TiltedCard (React Bits) — mặt trước ảnh + tên + giá, nhấn lật xem chi tiết, chiều cao theo nội dung | Dev |
+| 06/11/2026 | Hero theo ảnh mẫu bố cục (khung sóng, chữ căn phải, icon MXH); header dồn menu sang phải trong phạm vi Hero, có hiệu ứng trượt | Dev |
 | 06/11/2026 | Thiết kế lại theo Minimal & Direct / Nature Distilled / Storytelling / Exaggerated Minimalism; gỡ các dấu hiệu AI slop; sửa lỗi `border-color` toàn cục đè màu viền Tailwind; nút liên hệ mobile thành thanh đáy | Dev |
 | 06/11/2026 | Thay toàn bộ ảnh các section bằng ảnh độ phân giải cao trong `public/images/library` (ánh xạ tại `data/images.ts`); thêm mẫu áo dài AD01; Q12 đã giải quyết | Dev |

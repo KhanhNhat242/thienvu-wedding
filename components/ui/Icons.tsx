@@ -85,3 +85,32 @@ export const IconZalo = (p: P) => (
     </text>
   </svg>
 );
+
+/* Icon nét mảnh cho phần Giới thiệu (U1–U3) */
+export const IconPin = (p: P) => (
+  <svg {...base(p)}>
+    <path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 1 1 13 0c0 5.4-6.5 11-6.5 11Z" />
+    <circle cx="12" cy="10" r="2.4" />
+  </svg>
+);
+
+export const IconDress = (p: P) => (
+  <svg {...base(p)}>
+    <path d="M9.5 2.5 10 6.5 8.5 9.5l1.2 1.3L5 21h14l-4.7-10.2 1.2-1.3L14 6.5l.5-4" />
+    <path d="M10 6.5c.6.5 1.3.8 2 .8s1.4-.3 2-.8M8.5 9.5h7" />
+  </svg>
+);
+
+export const IconCalendar = (p: P) => (
+  <svg {...base(p)}>
+    <rect x="3.5" y="5" width="17" height="15.5" rx="1" />
+    <path d="M3.5 10h17M8 3v4M16 3v4" />
+    <path d="m9.2 14.6 1.9 1.9 3.8-3.8" />
+  </svg>
+);
+
+export const IconStar = (p: P) => (
+  <svg {...base({ ...p, fill: "currentColor", stroke: "none" })}>
+    <path d="m12 3.5 2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9L12 3.5Z" />
+  </svg>
+);

@@ -51,7 +51,11 @@ docs/                   # REQUIREMENTS.md và tài liệu khác
 9. **Ảnh sạch**: không overlay/gradient tối, không filter (blur, grayscale, sepia), không grain trên ảnh; không đặt chữ đè lên ảnh trừ ô chú thích nền đặc.
 10. **Bo góc 0–4px** (`rounded-[2px]`), **không box-shadow** trang trí (chỉ cho phép vòng focus), không `rounded-full` cho thẻ/nút/khung ảnh.
 11. Không thêm: thẻ icon-tiêu đề-mô tả lặp, nhãn/số chương không mang nghĩa, quầng gradient, glassmorphism, hiệu ứng nhấp nháy/pulse, hover nhấc thẻ. Xem mục "Phong cách" trong `docs/REQUIREMENTS.md`.
-12. Màu viền mặc định nằm trong `@layer base` — không viết CSS toàn cục ngoài layer vì sẽ đè lớp tiện ích Tailwind.
+12. **Ngoại lệ duy nhất: Hero** (theo ảnh mẫu khách chọn) — khung ảnh lượn sóng (SVG clipPath), nút CTA và icon mạng xã hội bo tròn. Không mang các ngoại lệ này sang section khác.
+13. **Ngoại lệ có chủ đích khác (theo yêu cầu khách):** (a) Giới thiệu — hover cột hiện ảnh nền + lớp tối mờ dưới chữ; (b) Bảng giá — thẻ TiltedCard (nghiêng 3D, bóng đổ của thẻ, mặt trước ảnh + lớp tối dưới chữ, nhấn để lật xem chi tiết); (c) Dịch vụ desktop — nửa bánh xe ảnh xoay theo cuộn (`ServicesWheel`); (d) Album — bố cục trái tim + nút "Xem thêm" ở chóp; (e) Trang phục — BounceCards (thẻ xoè, bo 25px, bóng); (f) Cảm nhận — ProfileCard (thẻ nghiêng 3D, ánh holo, bóng); (g) Hero — tiêu đề WarpText (WebGL, có <h1> sr-only cho SEO). Lớp tối chỉ dùng để chữ trên ảnh đạt tương phản AA.
+14. Thư viện ngoài sao chép vào `components/reactbits/` (React Bits). Giữ nguyên mã gốc, mọi chỉnh sửa phải ghi chú ở đầu file; kiểu TS khai báo trong file `.d.ts` cùng tên.
+15. Header: trong phạm vi Hero menu dồn sang phải, ra khỏi Hero trượt về giữa (transition flex-grow, tắt khi reduced-motion) — giữ nguyên hành vi này khi sửa Header.
+16. Màu viền mặc định nằm trong `@layer base` — không viết CSS toàn cục ngoài layer vì sẽ đè lớp tiện ích Tailwind.
 
 ## R-CONTENT — Nội dung
 1. **Chỉ tiếng Việt**, có dấu đầy đủ (`<html lang="vi">`), kể cả `alt`, `aria-label`, thông báo lỗi, metadata.

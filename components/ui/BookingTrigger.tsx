@@ -22,6 +22,8 @@ export default function BookingTrigger({
       className={className}
       onClick={(e) => {
         e.preventDefault();
+        // Không để click lan lên thẻ cha (vd. thẻ giá lật được) — nút chỉ mở form đặt lịch
+        e.stopPropagation();
         requestBooking(prefill);
       }}
     >

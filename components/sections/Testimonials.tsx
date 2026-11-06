@@ -1,12 +1,20 @@
-import Image from "next/image";
+"use client";
+
+import ProfileCard from "@/components/reactbits/ProfileCard";
+import { IconCalendar } from "@/components/ui/Icons";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { container, delay, headingGap } from "@/components/ui/styles";
 import { testimonials } from "@/data/content";
+import { requestBooking } from "@/lib/booking-events";
 import { nb } from "@/lib/typography";
 
+/** URL ảnh đã tối ưu bởi Next — ProfileCard dùng <img> thường */
+const optimized = (src: string, w: number) => `/_next/image?url=${encodeURIComponent(src)}&w=${w}&q=75`;
+
 /**
- * FR-07 — Cảm nhận khách hàng (Social Proof): ảnh cặp đôi + trích dẫn, viền trái màu rêu.
- * Không sao vàng, không bóng. DEMO: nội dung minh hoạ (Q9).
+ * FR-07 — Cảm nhận khách hàng bằng ProfileCard (React Bits): thẻ nghiêng 3D + ánh holo theo chuột.
+ * Ô ảnh: ảnh cưới của cặp đôi + tên + lời nhận xét. Hàng dưới: ảnh nhỏ, địa điểm · điểm, nút "Đặt lịch".
+ * DEMO: nội dung & điểm minh hoạ (Q9).
  */
 export default function Testimonials() {
   return (
@@ -19,35 +27,33 @@ export default function Testimonials() {
         />
 
         <ul
-          className={`${headingGap} no-scrollbar -mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 sm:-mx-8 sm:px-8 md:mx-0 md:grid md:grid-cols-3 md:gap-8 md:overflow-visible md:px-0`}
+          className={`${headingGap} testi-cards no-scrollbar -mx-5 flex snap-x snap-mandatory gap-5 overflow-x-auto px-5 pt-2 pb-6 sm:-mx-8 sm:px-8 lg:mx-0 lg:grid lg:grid-cols-3 lg:justify-items-center lg:gap-8 lg:overflow-visible lg:px-0`}
           aria-label="Danh sách cảm nhận khách hàng"
         >
           {testimonials.map((t, i) => (
-            <li
-              key={t.name}
-              data-reveal="up"
-              style={delay(i * 100)}
-              className="flex w-[85%] shrink-0 snap-center flex-col md:w-auto"
-            >
-              <div className="relative aspect-[4/3] overflow-hidden rounded-[2px] bg-sand">
-                <Image
-                  src={t.avatar}
-                  alt={`Ảnh cưới của ${t.name}`}
-                  fill
-                  sizes="(min-width: 768px) 360px, 85vw"
-                  className="object-cover"
-                  style={{ objectPosition: t.position }}
-                />
-              </div>
-              <figure className="mt-6 flex flex-1 flex-col border-l-2 border-moss pl-5">
-                <blockquote className="flex-1 font-serif text-[1.25rem] leading-relaxed text-ink italic">
-                  {nb(t.quote)}
-                </blockquote>
-                <figcaption className="mt-5">
-                  <span className="block text-[14.5px] font-medium text-ink">{t.name}</span>
-                  <span className="text-[13px] text-muted">{t.place}</span>
-                </figcaption>
-              </figure>
+            <li key={t.name} data-reveal="up" style={delay(i * 100)} className="w-[300px] shrink-0 snap-center sm:w-[340px]">
+              <ProfileCard
+                avatarUrl={optimized(t.avatar, 640)}
+                miniAvatarUrl={optimized(t.avatar, 128)}
+                name={nb(t.name)}
+                title={nb(t.quote)}
+                handle=""
+                status={`${t.place} · ★ ${t.rating.toFixed(1)}`}
+                statusColor="#5B6B4E"
+                contactText="Đặt lịch"
+                contactIcon={<IconCalendar className="size-4" />}
+                onContactClick={() => requestBooking({})}
+                theme="light"
+                holo={0.8}
+                glare={0.5}
+                tiltStrength={12}
+                parallax={8}
+                radius={16}
+                enableTilt
+                intro
+                showUserInfo
+                enableMobileTilt={false}
+              />
             </li>
           ))}
         </ul>
